@@ -25,6 +25,10 @@ public class EmployeeService {
     private EmployeeDataWebClient webClient;
 
     @Autowired
+    private EmailService emailService;
+
+
+    @Autowired
     private Faker faker;
     public Mono<LocalDate> getDoB(int employeeId){
         return Mono.just(LocalDate.now());
@@ -54,7 +58,16 @@ public class EmployeeService {
                         .apellido(employeeWithItem.getEmployee().getApellido())
                         .fechaNacimiento(employeeWithItem.getResponseServiceDate().getFecha())
                         .build()
-                ).sort(new Comparator<ControllerExampleReactivo.Employee>() {
+                ).doOnNext(employee -> {
+                    EmailService.Email e=
+                            EmailService.Email.builder()
+                                    .from(employee.getNombre())
+                                    .to("chernanq88@gmail.com")
+                                    .build();
+                    emailService.sendEmail(e);
+
+                })
+                .sort(new Comparator<ControllerExampleReactivo.Employee>() {
                         @Override
                         public int compare(ControllerExampleReactivo.Employee o1, ControllerExampleReactivo.Employee o2) {
                             if (o1.getId()>o2.getId())
