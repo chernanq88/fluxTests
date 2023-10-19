@@ -6,6 +6,7 @@ import com.quintana.reactive.demo.clients.EmployeeDataWebClient;
 import com.quintana.reactive.demo.controllers.ControllerExampleReactivo;
 import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -21,7 +22,7 @@ import java.util.stream.IntStream;
 @NoArgsConstructor
 public class EmployeeService {
 
-    @Autowired
+    @Qualifier(value = "employeeWebClient")
     private EmployeeDataWebClient webClient;
 
     @Autowired
